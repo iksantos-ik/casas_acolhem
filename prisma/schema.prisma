@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  fullName     String
+  document     String    // CPF ou CNPJ
+  address      String
+  district     String
+  city         String
+  email        String    @unique
+  phone        String
+  userType     UserType
+  hasExperienceWithTargetAudience Boolean
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  shelterInfo  Shelter? // Relacionamento com dados da casa, se for uma
+}
+
+enum UserType {
+  VOLUNTEER
+  DEPENDENT
+  SHELTER
+}
+
+model Shelter {
+  id                  String     @id @default(uuid())
+  userId              String     @unique
+  user                User       @relation(fields: [userId], references: [id])
+  capacity            Int
+  mainNeeds           String
+  foundationDate      DateTime
+  operatingSince      Int
+  currentResidents    Int
+  targetGender        Gender
+  documents           Document[] // relação com os arquivos
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+}
+
+model Document {
+  id         String   @id @default(uuid())
+  shelterId  String
+  shelter    Shelter  @relation(fields: [shelterId], references: [id])
+  name       String   // ex: “CNPJ”, “Estatuto Social”
+  url        String   // caminho do arquivo no storage (ex: S3 ou local)
+  uploadedAt DateTime @default(now())
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  MIXED
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
