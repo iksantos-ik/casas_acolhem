@@ -1,37 +1,36 @@
-Casas Acolhem Backend
-API backend para plataforma de cadastro e conexão de casas de acolhimento para pessoas com dependência química, voluntários e admins.
+# Plataforma de Conexão entre Casas de Acolhimento, Voluntários e Beneficiários
 
-Tecnologias
-NestJS — framework Node.js para construir APIs escaláveis
+Este projeto tem como objetivo criar uma plataforma que conecte casas de acolhimento de adultos em situação de vulnerabilidade com voluntários, doadores e pessoas em necessidade de apoio.
 
-Prisma — ORM para acesso e gerenciamento do banco de dados
+## 🚀 Funcionalidades principais
 
-Banco de dados: PostgreSQL (configurável via .env)
+- Cadastro e validação de casas de acolhimento por administradores voluntários
+- Página pública com:
+  - Testemunhos de pessoas recuperadas
+  - Divulgação de necessidades das casas (itens, serviços, voluntariado)
+- Sistema de candidatura de voluntários e beneficiários
+- Área de administração para triagem de novos cadastros
+- Painel para gestão interna das casas de acolhimento
 
-Testes com Jest
+## 🛠️ Tecnologias
 
-Linter e formatação com ESLint e Prettier
+- **Backend:** NestJS + Prisma
+- **Banco de Dados:** PostgreSQL (ou SQLite para dev)
+- **Frontend:** React (em breve)
+- **Hospedagem:** Vercel (frontend) / Railway (backend)
 
-Funcionalidades
-Cadastro de usuários: voluntários, pessoas dependentes químicas e casas de acolhimento
+## 📦 Instalação
 
-Gerenciamento de dados específicos para casas (capacidade, necessidades, documentos, etc)
+```bash
+# clone o projeto
+git clone https://github.com/seuusuario/casas_acolhem-back.git
+cd casas_acolhem-back
 
-Controle de admins para aprovação e gestão de cadastros
+# instale as dependências
+npm install
 
-Endpoint para consulta de casas disponíveis e status de vagas
+# rode as migrations do prisma
+npx prisma migrate dev
 
-Upload e associação de documentos às casas de acolhimento
-
-
-## INICIA O PRISMA:
-npx prisma init;
-npx prisma migrate dev;
-npx prisma generate;
-npx prisma studio;
-
-## CRIA O BANCO DE DADOS:
-npx prisma migrate dev;
-
-## CRIA O CLIENTE DO PRISMA:
-npx prisma generate
+# inicie a API
+npm run start:dev
