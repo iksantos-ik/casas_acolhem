@@ -1,0 +1,11 @@
+
+
+export enum ServiceArea {
+    LIMPEZA = 'LIMPEZA',
+    COZINHA = 'COZINHA',
+    ATENDIMENTO_MEDICO = 'ATENDIMENTO_MEDICO',
+    PSICOLOGICO = 'PSICOLOGICO',
+    ARTES = 'ARTES',
+    LAZER = 'LAZER',
+    ESPORTE = 'ESPORTE'
+}

@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+// output   = "../generated/prisma"
 }
 
 datasource db {
@@ -17,46 +17,73 @@ datasource db {
 model User {
   id           String    @id @default(uuid())
   fullName     String
-  document     String    // CPF ou CNPJ
+  document     String    // CPF
   address      String
   district     String
   city         String
   email        String    @unique
   phone        String
-  userType     UserType
+  userTypes    UserType
   hasExperienceWithTargetAudience Boolean
+  userServiceArea  ServiceArea
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  shelterInfo  Shelter? // Relacionamento com dados da casa, se for uma
+}
+
+enum ServiceArea {
+  LIMPEZA
+  COZINHA
+  ATENDIMENTO_MEDICO
+  PSICOLOGICO
+  ARTES
+  LAZER
+  ESPORTE
 }
 
 enum UserType {
   VOLUNTEER
   DEPENDENT
-  SHELTER
+  ADMIN
 }
 
 model Shelter {
   id                  String     @id @default(uuid())
-  userId              String     @unique
-  user                User       @relation(fields: [userId], references: [id])
+  name                String
   capacity            Int
   mainNeeds           String
   foundationDate      DateTime
+  description         String
+  addresses           Address[]
   operatingSince      Int
   currentResidents    Int
-  targetGender        Gender
+  targetGender        Gender  // MASCULINO, FEMININO, MIXED
   documents           Document[] // relação com os arquivos
+  responsibleName     String // nome da pessoa responsavel
+  responsiblePhone    String // telefone da pessoa responsavel
   createdAt           DateTime   @default(now())
   updatedAt           DateTime   @updatedAt
+}
+
+model Address {
+  id             String      @id @default(uuid())
+  shelterId      String
+  zipCode        String
+  street         String
+  number         String
+  neighborhood   String?
+  city           String
+  state          String
+  complement     String?
+
+  shelter        Shelter @relation(fields: [shelterId], references: [id], onDelete: Cascade)
 }
 
 model Document {
   id         String   @id @default(uuid())
   shelterId  String
-  shelter    Shelter  @relation(fields: [shelterId], references: [id])
-  name       String   // ex: “CNPJ”, “Estatuto Social”
+  shelter    Shelter  @relation(fields: [shelterId], references: [id], onDelete: Cascade)
+  documentName       String   // ex: “CNPJ”, “Estatuto Social”
   url        String   // caminho do arquivo no storage (ex: S3 ou local)
   uploadedAt DateTime @default(now())
 }
@@ -67,11 +94,4 @@ enum Gender {
   MIXED
 }
 
-model Admin {
-  id        String   @id @default(uuid())
-  fullName  String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+
