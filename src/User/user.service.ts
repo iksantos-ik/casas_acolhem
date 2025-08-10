@@ -28,9 +28,10 @@ export class UserService {
 
 
   async atualizaUsuario(
+    id: string,
     User: UserUpdateDto, 
   ) {
-    return await this.userRepository.updateUser(User);
+    return await this.userRepository.updateUser(id, User);
   }
   
 }

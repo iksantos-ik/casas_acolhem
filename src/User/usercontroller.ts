@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { UserInputDto } from './DTO/user_input_dto';
 import { UserUpdateDto } from './DTO/user_update_dto';
 
-@Controller()
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -19,6 +19,7 @@ export class UserController {
   async criaUsuario(
     @Body() user: UserInputDto,
   ) {
+    console.log(user);
     return await this.userService.criaUsuario(user);
   }
   @Put(':id')
@@ -26,7 +27,7 @@ export class UserController {
     @Param('id') id: string,
     @Body() user: UserUpdateDto,
   ) {
-    return await this.userService.atualizaUsuario(user);
+    return await this.userService.atualizaUsuario(id, user);
   }
   @Delete(':id')
   async excluiUsuario(@Param('id') id: string) {
